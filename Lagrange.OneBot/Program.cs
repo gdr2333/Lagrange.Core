@@ -38,41 +38,6 @@ internal abstract class Program
 
         Console.WriteLine($"Version: {version?[^40..] ?? "unknown"}\n");
 
-        
-        // AutoUpdate
-        var updater = new Updater.GithubUpdater();
-        await updater.GetConfig();
-        if (updater.Config.EnableAutoUpdate)
-        {
-            Console.WriteLine("Auto update enabled, Checking for updates...");
-            try
-            {
-                if (await updater.CheckUpdate())
-                {
-                    Console.WriteLine($"Update available, downloading...");
-                    await updater.Update();
-                }
-                else
-                {
-                    Console.WriteLine("No updates available, continuing...");
-                }
-
-                if (updater.Config.CheckInterval > 0)
-                {
-                    Console.WriteLine(
-                        $"Interval check enabled, Next check in {updater.Config.CheckInterval} seconds."
-                    );
-                    updater.StartIntervalCheck();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(
-                    $"Error checking for updates: {e.Message}, please check your network connection or config file, use proxy if needed."
-                );
-            }
-        }
-
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
 
